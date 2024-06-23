@@ -52,3 +52,12 @@ plt.grid(True)
 # Pokaż wykres
 plt.tight_layout()
 plt.show()
+
+# Wykres kolowy pyk
+plt.figure(figsize=(12,8))
+flight_counts.plot(kind='pie', autopct='%1.1f%%', colors=plt.cm.Paired(range(len(flight_counts))))
+plt.title('Percentage of Flights by Continent')
+plt.ylabel('')
+
+plt.tight_layout()
+plt.show()
