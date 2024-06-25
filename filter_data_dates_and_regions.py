@@ -1,10 +1,11 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, lit
+from pyspark.sql import Row
 from collections import defaultdict
 
 S3_DATA_SOURCE_PATH = 's3://lotydane/data-source/'
 S3_DATA_OUTPUT_PATH = 's3://lotydane/output/combined_output.csv'
-TXT_OUTPUT_PATH = 's3://lotydane/output/combined_output_counts.txt'  # Local path for Spark cluster
+TXT_OUTPUT_PATH = 's3://lotydane/output/combined_output_counts'
 
 def filter(inputpath, date, regions, spark):
     selected_data = []
@@ -30,9 +31,9 @@ def main():
     spark = SparkSession.builder.appName('flightfilter').getOrCreate()
 
     regions = [
-        ("warszawa", 52.148307723339485, 52.18238951601168, 20.941468608732215, 20.98738649910821),
-        ("louisiana", 29.97873342237595, 30.010994985996863, -90.28570473079789, -90.24158775899534),
-        ("la_palma", 28.868352292148156, 28.439216135183663, -18.0222540407791, -17.680869018649712),
+        ("warszawa", 52.0770061643252, 52.404018184379126, 20.753517547628764,  21.387170972121773),
+        ("louisiana", 29.348298442498482, 30.721262954175135, -91.39241969038389, -89.42478394412178),
+        ("la_palma", 28.439216135183663, 28.868352292148156,  -18.0222540407791, -17.680869018649712),
         ("ukraine", 47.9525254824843, 52.24749063117518, 24.04518269949129, 38.78179587580102)
     ]
 
@@ -54,12 +55,10 @@ def main():
         combined_data.coalesce(1).write.mode('overwrite').csv(S3_DATA_OUTPUT_PATH, header=True)
 
     # Sort the counts by region and date
-    sorted_counts = sorted(all_region_counts.items(), key=lambda x: (x[0][0], x[0][1]))
-
-    # Write the counts to a text file
-    with open(TXT_OUTPUT_PATH, "w") as f:
-        for (region, date), count in sorted_counts:
-            f.write(f"{region}, {date}: {count}\n")
+    counts_rows = [Row(region=region, date=date, count=count) for (region, date), count in sorted(all_region_counts.items())]
+    print(counts_rows)
+    counts_df = spark.createDataFrame(counts_rows)
+    counts_df.coalesce(1).write.mode('overwrite').option("header", "true").csv(TXT_OUTPUT_PATH)
 
     print("Completed filtering for all dates and regions.")
 
