@@ -1,7 +1,11 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QRadioButton, QLabel, QGroupBox, QSlider, QPushButton
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap
+import os
+import folium
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QRadioButton, QLabel, \
+    QGroupBox, QSlider, QPushButton
+from PyQt5.QtCore import Qt, QUrl
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -12,6 +16,7 @@ class MainWindow(QMainWindow):
         self.setFixedWidth(1200)  # Stała szerokość okna w pikselach
         self.setFixedHeight(800)  # Stała wysokość okna w pikselach
 
+        # Inicjalizacja interfejsu użytkownika
         self.initUI()
 
     def initUI(self):
@@ -19,17 +24,20 @@ class MainWindow(QMainWindow):
         main_widget = QWidget(self)
         self.setCentralWidget(main_widget)
 
+        # Tworzenie głównego layoutu
         main_layout = QHBoxLayout(main_widget)
-        main_layout.setContentsMargins(10, 10, 10, 10)
+        main_layout.setContentsMargins(10, 10, 10, 10)  # Ustawienie marginesów
 
+        # Tworzenie layoutu dla lewego panelu
         left_layout = QVBoxLayout()
-        left_layout.setSpacing(0)
+        left_layout.setSpacing(0)  # Brak odstępów między elementami
 
-        self.map_label = QLabel(self)
-        self.map_label.setFixedSize(800, 400)
-        self.map_label.setStyleSheet("background-color: gray;")
-        # Dodanie QLabel do layoutu lewego panelu
-        left_layout.addWidget(self.map_label, alignment=Qt.AlignTop | Qt.AlignLeft)
+        # Tworzenie przeglądarki do wyświetlania mapy
+        self.map_view = QWebEngineView()
+        self.map_view.setFixedSize(800, 500)  # Ustawienie stałego rozmiaru
+
+        # Dodanie przeglądarki do layoutu lewego panelu
+        left_layout.addWidget(self.map_view, alignment=Qt.AlignTop | Qt.AlignLeft)
 
         # Tworzenie slidera dla godzin
         self.slider = QSlider(Qt.Horizontal)
@@ -39,20 +47,27 @@ class MainWindow(QMainWindow):
         self.slider.valueChanged.connect(self.update_label)
         self.slider.setFixedWidth(800)  # Ustawienie szerokości slidera
 
+        # Dodanie slidera do layoutu lewego panelu
         left_layout.addWidget(self.slider)
 
+        # Tworzenie etykiety dla wyświetlanej godziny
         self.label = QLabel("00")
         self.label.setAlignment(Qt.AlignCenter)
 
+        # Dodanie etykiety do layoutu lewego panelu
         left_layout.addWidget(self.label)
 
+        # Tworzenie przycisku "Generuj wykres"
         generate_button = QPushButton("Generuj wykres")
-        generate_button.setFixedWidth(800)
+        generate_button.setFixedWidth(800)  # Ustawienie szerokości przycisku
 
+        # Dodanie przycisku do layoutu lewego panelu
         left_layout.addWidget(generate_button)
 
+        # Dodanie lewego panelu do głównego layoutu
         main_layout.addLayout(left_layout)
 
+        # Tworzenie layoutu dla przycisków radiowych
         radio_layout = QVBoxLayout()
         radio_layout.setContentsMargins(20, 10, 10, 10)  # Ustawienie marginesów
 
@@ -65,10 +80,13 @@ class MainWindow(QMainWindow):
         radio_button_3 = QRadioButton("Ukraina")
         radio_button_4 = QRadioButton("Luizjana")
 
-        radio_button_1.toggled.connect(lambda: self.display_map("la_palma.jpg"))
-        radio_button_2.toggled.connect(lambda: self.display_map("lotnisko_warszawa.jpg"))
-        radio_button_3.toggled.connect(lambda: self.display_map("ukraina.jpg"))
-        radio_button_4.toggled.connect(lambda: self.display_map("luizjana.jpg"))
+        radio_button_1.toggled.connect(lambda: self.display_map("La Palma", [28.439216135183663, -18.0222540407791],
+                                                                                    [28.868352292148156, -17.680869018649712]))
+        radio_button_2.toggled.connect(
+            lambda: self.display_map("Lotnisko Warszawa", [52.404018184379126, 20.753517547628764],
+                                     [52.0770061643252, 21.387170972121773]))
+        radio_button_3.toggled.connect(lambda: self.display_map("Ukraina", [ 47.9525254824843, 24.04518269949129], [52.24749063117518, 38.78179587580102]))
+        radio_button_4.toggled.connect(lambda: self.display_map("Luizjana", [30.721262954175135, -91.39241969038389], [29.348298442498482, -89.42478394412178]))
 
         obszar_layout.addWidget(radio_button_1)
         obszar_layout.addWidget(radio_button_2)
@@ -79,40 +97,50 @@ class MainWindow(QMainWindow):
         data_group = QGroupBox("Data")
         data_layout = QVBoxLayout(data_group)
 
-        radio_button_5 = QRadioButton("Opcja 5")
-        radio_button_6 = QRadioButton("Opcja 6")
-        radio_button_7 = QRadioButton("Opcja 7")
-        radio_button_8 = QRadioButton("Opcja 8")
-        radio_button_9 = QRadioButton("Opcja 9")
-        radio_button_10 = QRadioButton("Opcja 10")
+        radio_button_5 = QRadioButton("29.11.2021 - Wulkan Cumbre ")
+        radio_button_6 = QRadioButton("29.06.2020 - Początek covida")
+        radio_button_7 = QRadioButton("28.02.2022 - Start wojny na Ukrainie")
+        radio_button_8 = QRadioButton("30.08.2021 - Huragan Ida")
+        radio_button_9 = QRadioButton("20.12.2021")
 
         data_layout.addWidget(radio_button_5)
         data_layout.addWidget(radio_button_6)
         data_layout.addWidget(radio_button_7)
         data_layout.addWidget(radio_button_8)
         data_layout.addWidget(radio_button_9)
-        data_layout.addWidget(radio_button_10)
 
-
+        # Dodanie grup do layoutu przycisków radiowych
         radio_layout.addWidget(obszar_group)
-        radio_layout.addSpacing(20)
+        radio_layout.addSpacing(20)  # Odstęp między grupami
         radio_layout.addWidget(data_group)
 
+        # Dodanie layoutu z przyciskami radiowymi do głównego layoutu
         main_layout.addLayout(radio_layout)
 
     def update_label(self, value):
         self.label.setText(f"{value:02d}")
 
-    def display_map(self, image_path):
+    def display_map(self, name, nw, se):
+        # Tworzenie mapy przy użyciu folium
+        m = folium.Map(location=[(nw[0] + se[0]) / 2, (nw[1] + se[1]) / 2], zoom_start=12)
 
-        pixmap = QPixmap(image_path)
-        self.map_label.setPixmap(pixmap.scaled(self.map_label.size(), Qt.KeepAspectRatio))
+        # Dodawanie prostokąta dla określonego obszaru
+        folium.Rectangle(bounds=[nw, se], color='cyan', fill=True, fill_opacity=0).add_to(m)
+
+        # Zapisz mapę jako plik HTML
+        file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'map.html'))
+        m.save(file_path)
+
+        # Załaduj mapę w przeglądarce
+        self.map_view.setUrl(QUrl.fromLocalFile(file_path))
+
 
 def main():
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
     sys.exit(app.exec_())
+
 
 if __name__ == '__main__':
     main()
