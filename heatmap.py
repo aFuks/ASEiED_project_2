@@ -19,7 +19,7 @@ def draw_heatmap(file_path, cmap='Reds'):
     # Map regions to specific events
     region_mapping = {
         'louisiana': 'Huragan ( Louisiana )',
-        'ukraine': 'Wojna ( Ukraine )',
+        'ukraine': 'War ( Ukraine )',
         'warszawa': 'Covid ( Warszawa )'
     }
 
