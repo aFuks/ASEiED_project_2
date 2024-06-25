@@ -41,24 +41,6 @@ class MainWindow(QMainWindow):
         # Dodanie przeglądarki do layoutu lewego panelu
         left_layout.addWidget(self.map_view, alignment=Qt.AlignTop | Qt.AlignLeft)
 
-        # Tworzenie slidera dla godzin
-        self.slider = QSlider(Qt.Horizontal)
-        self.slider.setRange(0, 23)
-        self.slider.setTickInterval(1)
-        self.slider.setTickPosition(QSlider.TicksBelow)
-        self.slider.valueChanged.connect(self.update_label)
-        self.slider.setFixedWidth(800)  # Ustawienie szerokości slidera
-
-        # Dodanie slidera do layoutu lewego panelu
-        left_layout.addWidget(self.slider)
-
-        # Tworzenie etykiety dla wyświetlanej godziny
-        self.label = QLabel("00")
-        self.label.setAlignment(Qt.AlignCenter)
-
-        # Dodanie etykiety do layoutu lewego panelu
-        left_layout.addWidget(self.label)
-
         # Tworzenie przycisku "Generuj wykres"
         generate_button = QPushButton("Generuj wykres")
         generate_button.setFixedWidth(800)  # Ustawienie szerokości przycisku
