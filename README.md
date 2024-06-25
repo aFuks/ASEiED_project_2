@@ -32,6 +32,8 @@ The project is carried out in several stages:
 3. **Analysis and Visualization**: Analyze the data using Python and create visualizations of the results.
 4. **Documentation and Publication**: Prepare a detailed report and publish the results on GitHub.
 
+![obraz](https://github.com/aFuks/ASEiED_project_2/assets/106777205/cbee5615-2f75-4dd9-9996-81e04cc0170a)
+
 ---
 
 
