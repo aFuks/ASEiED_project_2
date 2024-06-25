@@ -53,24 +53,29 @@ The data can be visualized in the program. The user can select the area and date
 
 ![att TUcJvawOAl-rh-OSKfLnnQPs96n82TjWpHlFZnhbNsY](https://github.com/aFuks/ASEiED_project_2/assets/96986297/0f61fe17-6113-47f2-9308-03bd5f43edfb)
 <p align="center"><i>fig. 1 Main GUI layout without any data selected.</i></p>
+<br>
 
 ![att MI0V_nKf1-mlqgvBJqFwpqGPBIrsMdjHAVAnS5KpV3g](https://github.com/aFuks/ASEiED_project_2/assets/96986297/8a983662-9224-4f80-a4be-226f3a604d80)
 <p align="center"><i>fig. 2 GUI showing data from Warsaw region on 28.02.2022.</i></p>
+<br>
 
 ![att YLGzM2QVQSo98if1RZqYdBkmbX94Kyi3jQzXvGSS9rc](https://github.com/aFuks/ASEiED_project_2/assets/96986297/618dcb7c-1da5-4336-ab62-8aa229e0fed0)
 <p align="center"><i>fig. 3 GUI showing data from Ukraine region on 30.08.2021.</i></p>
+<br>
 
 ![att 9rsemSbzHLtkdNBe7tTxgBZjkLRk__Jcx5FSgWeigYQ](https://github.com/aFuks/ASEiED_project_2/assets/96986297/96150c90-dfa8-4d8b-a5bd-6f222e1f9156)
 <p align="center"><i>fig. 4 GUI showing data from Louisiana region on 28.02.2022. On the chart, the difference in time zones is clearly visible compared to fig. 1 and fig. 2.</i></p>
+<br>
 
 ![att u9oQQ95YytkFVSxgSuiProfSLbwQIcNDIwih6bxoobs](https://github.com/aFuks/ASEiED_project_2/assets/96986297/d22f455a-ca00-4afc-a3bc-fa830467678e)
 <p align="center"><i>fig. 5 Handling a situation where there is no data for a given day.</i></p>
-
+<br>
 
 A summary graph showing flight intensity in the regions for all dates was also created.
 ![obraz](https://github.com/aFuks/ASEiED_project_2/assets/106777205/2552de7c-0a85-4077-a8e9-5c5432bc70d4)
 <p align="center"><i>fig. 6 Chart with all combined data.</i></p>
 
+<br>
 
 As seen in the attached graphs, global events have a noticeable impact on the number of flights. A noticeable decrease in flights in all locations is observed during the pandemic. At the time of the escalation of the conflict in Ukraine, all air traffic was suspended. Increased air traffic in all locations is visible during the pre-holiday period.
 
