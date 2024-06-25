@@ -1,10 +1,12 @@
 import sys
 import os
 import folium
+import base64
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QVBoxLayout, QRadioButton, QLabel, \
     QGroupBox, QSlider, QPushButton
 from PyQt5.QtCore import Qt, QUrl
 from PyQt5.QtWebEngineWidgets import QWebEngineView
+from qt_material import apply_stylesheet
 
 
 class MainWindow(QMainWindow):
@@ -12,7 +14,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         # Ustawienia okna
-        self.setWindowTitle("Stała szerokość okna")
+        self.setWindowTitle("Analiza lotów")
         self.setFixedWidth(1200)  # Stała szerokość okna w pikselach
         self.setFixedHeight(800)  # Stała wysokość okna w pikselach
 
@@ -76,17 +78,19 @@ class MainWindow(QMainWindow):
         obszar_layout = QVBoxLayout(obszar_group)
 
         radio_button_1 = QRadioButton("La Palma")
-        radio_button_2 = QRadioButton("Lotnisko Warszawa")
+        radio_button_2 = QRadioButton("Warszawa")
+        self.display_default([52.404018184379126, 20.753517547628764], [52.0770061643252, 21.387170972121773])
         radio_button_3 = QRadioButton("Ukraina")
-        radio_button_4 = QRadioButton("Luizjana")
+        radio_button_4 = QRadioButton("południe Luizjany")
 
-        radio_button_1.toggled.connect(lambda: self.display_map("La Palma", [28.439216135183663, -18.0222540407791],
-                                                                                    [28.868352292148156, -17.680869018649712]))
-        radio_button_2.toggled.connect(
-            lambda: self.display_map("Lotnisko Warszawa", [52.404018184379126, 20.753517547628764],
-                                     [52.0770061643252, 21.387170972121773]))
-        radio_button_3.toggled.connect(lambda: self.display_map("Ukraina", [ 47.9525254824843, 24.04518269949129], [52.24749063117518, 38.78179587580102]))
-        radio_button_4.toggled.connect(lambda: self.display_map("Luizjana", [30.721262954175135, -91.39241969038389], [29.348298442498482, -89.42478394412178]))
+        radio_button_1.toggled.connect(lambda: self.display_map([28.439216135183663, -18.0222540407791],
+                                                                [28.868352292148156, -17.680869018649712]))
+        radio_button_2.toggled.connect(lambda: self.display_map([52.404018184379126, 20.753517547628764],
+                                                                [52.0770061643252, 21.387170972121773]))
+        radio_button_3.toggled.connect(lambda: self.display_map([47.9525254824843, 24.04518269949129],
+                                                                [52.24749063117518, 38.78179587580102]))
+        radio_button_4.toggled.connect(lambda: self.display_map([30.721262954175135, -91.39241969038389],
+                                                                [29.348298442498482, -89.42478394412178]))
 
         obszar_layout.addWidget(radio_button_1)
         obszar_layout.addWidget(radio_button_2)
@@ -97,8 +101,8 @@ class MainWindow(QMainWindow):
         data_group = QGroupBox("Data")
         data_layout = QVBoxLayout(data_group)
 
-        radio_button_5 = QRadioButton("29.11.2021 - Wulkan Cumbre ")
-        radio_button_6 = QRadioButton("29.06.2020 - Początek covida")
+        radio_button_5 = QRadioButton("29.11.2021 - erupcja Wulkanu Cumbre ")
+        radio_button_6 = QRadioButton("29.06.2020 - Początek pandemii COVID19")
         radio_button_7 = QRadioButton("28.02.2022 - Start wojny na Ukrainie")
         radio_button_8 = QRadioButton("30.08.2021 - Huragan Ida")
         radio_button_9 = QRadioButton("20.12.2021")
@@ -120,7 +124,7 @@ class MainWindow(QMainWindow):
     def update_label(self, value):
         self.label.setText(f"{value:02d}")
 
-    def display_map(self, name, nw, se):
+    def display_map(self, nw, se):
         # Tworzenie mapy przy użyciu folium
         m = folium.Map(location=[(nw[0] + se[0]) / 2, (nw[1] + se[1]) / 2], zoom_start=12)
 
@@ -134,9 +138,21 @@ class MainWindow(QMainWindow):
         # Załaduj mapę w przeglądarce
         self.map_view.setUrl(QUrl.fromLocalFile(file_path))
 
+    def display_default(self, nw, se):
+        # Tworzenie mapy przy użyciu folium
+        m = folium.Map(location=[(nw[0] + se[0]) / 2, (nw[1] + se[1]) / 2], zoom_start=5)
+
+        # Zapisz mapę jako plik HTML
+        file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'map.html'))
+        m.save(file_path)
+
+        # Załaduj mapę w przeglądarce
+        self.map_view.setUrl(QUrl.fromLocalFile(file_path))
+
 
 def main():
     app = QApplication(sys.argv)
+    apply_stylesheet(app, theme='dark_cyan.xml')
     window = MainWindow()
     window.show()
     sys.exit(app.exec_())
