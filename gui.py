@@ -59,14 +59,11 @@ class MainWindow(QMainWindow):
         obszar_group = QGroupBox("Obszar")
         obszar_layout = QVBoxLayout(obszar_group)
 
-        radio_button_1 = QRadioButton("La Palma")
         radio_button_2 = QRadioButton("Warszawa")
         self.display_default([52.404018184379126, 20.753517547628764], [52.0770061643252, 21.387170972121773])
         radio_button_3 = QRadioButton("Ukraina")
         radio_button_4 = QRadioButton("południe Luizjany")
 
-        radio_button_1.toggled.connect(lambda: self.display_map('p', [28.439216135183663, -18.0222540407791],
-                                                                [28.868352292148156, -17.680869018649712]))
         radio_button_2.toggled.connect(lambda: self.display_map('w', [52.404018184379126, 20.753517547628764],
                                                                 [52.0770061643252, 21.387170972121773]))
         radio_button_3.toggled.connect(lambda: self.display_map('u', [47.9525254824843, 24.04518269949129],
@@ -74,7 +71,6 @@ class MainWindow(QMainWindow):
         radio_button_4.toggled.connect(lambda: self.display_map('l',[30.721262954175135, -91.39241969038389],
                                                                 [29.348298442498482, -89.42478394412178]))
 
-        obszar_layout.addWidget(radio_button_1)
         obszar_layout.addWidget(radio_button_2)
         obszar_layout.addWidget(radio_button_3)
         obszar_layout.addWidget(radio_button_4)
@@ -111,8 +107,6 @@ class MainWindow(QMainWindow):
             zoom = 10
         elif region == 'u':
             zoom = 6
-        elif region == 'p':
-            zoom = 10
         else:
             zoom = 8
         # Tworzenie mapy przy użyciu folium
