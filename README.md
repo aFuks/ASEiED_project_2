@@ -81,7 +81,9 @@ As seen in the attached graphs, global events have a noticeable impact on the nu
 
 ![image](https://github.com/aFuks/ASEiED_project_2/assets/106623070/465cf4af-6197-4415-9bdb-7f0c4804e818)
 
+![image](https://github.com/aFuks/ASEiED_project_2/assets/106623070/5d658512-831a-491e-a1a9-1c2980cc6501)
 
+![image](https://github.com/aFuks/ASEiED_project_2/assets/106623070/1a9f53ae-0fed-4895-b695-4ec1b859c72d)
 
 ---
 
