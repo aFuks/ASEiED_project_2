@@ -79,6 +79,7 @@ A summary graph showing flight intensity in the regions for all dates was also c
 
 As seen in the attached graphs, global events have a noticeable impact on the number of flights. A noticeable decrease in flights in all locations is observed during the pandemic. At the time of the escalation of the conflict in Ukraine, all air traffic was suspended. Increased air traffic in all locations is visible during the pre-holiday period.
 
+![image](https://github.com/aFuks/ASEiED_project_2/assets/106623070/465cf4af-6197-4415-9bdb-7f0c4804e818)
 
 
 
